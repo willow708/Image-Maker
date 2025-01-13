@@ -1,0 +1,50 @@
+<?php
+// Replace with your actual Hugging Face API key
+$apiToken = 'YOUR_HUGGING_FACE_API_KEY';
+$apiUrl = "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4";
+
+// Get user input from command line arguments
+$prompt = $argv[1] ?? '';
+
+if (empty($prompt)) {
+    echo "Please provide a text prompt as an argument.\n";
+    exit(1);
+}
+
+// Initialize cURL session
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Authorization: Bearer $apiToken",
+    "Content-Type: application/json"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["inputs" => $prompt]));
+
+// Execute the request
+$response = curl_exec($ch);
+
+if (curl_errno($ch)) {
+    echo "Error: " . curl_error($ch) . "\n";
+    curl_close($ch);
+    exit(1);
+}
+
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($httpCode != 200) {
+    echo "Failed to generate image. HTTP Status Code: $httpCode\n";
+    if ($httpCode == 401) {
+        echo "Unauthorized: Please check your API token.\n";
+    }
+    exit(1);
+}
+
+// Save the image to a file
+$imagePath = "generated_image.png";
+file_put_contents($imagePath, $response);
+
+echo "Image generated and saved as $imagePath\n";
+?>
