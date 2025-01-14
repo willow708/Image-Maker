@@ -27,3 +27,70 @@ if ($return_var === 0) {
 } else {
     echo "Failed to generate image.\n";
 }
+
+
+
+## Make file executable.
+chmod +x text_to_image.php
+
+## Install imagemagick
+sudo apt install imagemagick
+
+## run this command to use
+./text_to_image.php "Hello, World!"
+
+Additional Enhancements
+You can further enhance this script by adding more features such as:
+
+Custom Font : Allow the user to specify a font.
+Font Size : Allow the user to specify the font size.
+Background and Text Color : Allow the user to specify background and text colors.
+
+#!/usr/bin/env php
+<?php
+
+// Check if the user provided a text prompt
+if ($argc < 2) {
+    echo "Usage: php text_to_image.php \"Your text here\" [--font FONT] [--size SIZE] [--bg BG_COLOR] [--fg FG_COLOR]\n";
+    exit(1);
+}
+
+$options = [];
+$text = '';
+
+foreach ($argv as $index => $arg) {
+    if ($index === 1) {
+        $text = $arg;
+    } elseif (strpos($arg, '--') === 0) {
+        $option = explode('=', $arg);
+        $options[str_replace('--', '', $option[0])] = isset($option[1]) ? $option[1] : null;
+    }
+}
+
+$font = $options['font'] ?? 'Arial';
+$size = $options['size'] ?? '24';
+$bgColor = $options['bg'] ?? 'white';
+$fgColor = $options['fg'] ?? 'black';
+
+// Generate a unique filename for the image
+$filename = uniqid() . '.png';
+$filepath = __DIR__ . '/images/' . $filename;
+
+// Create the images directory if it doesn't exist
+if (!file_exists(__DIR__ . '/images')) {
+    mkdir(__DIR__ . '/images', 0777, true);
+}
+
+// Use ImageMagick to generate the image
+$cmd = "convert -background $bgColor -fill $fgColor -font $font -pointsize $size label:'$text' '$filepath'";
+exec($cmd, $output, $return_var);
+
+if ($return_var === 0) {
+    echo "Image generated successfully at: $filepath\n";
+} else {
+    echo "Failed to generate image.\n";
+}
+
+
+##Now you can run the script with additional options:
+./text_to_image.php "Hello, World!" --font "DejaVu-Sans" --size 36 --bg "lightblue" --fg "darkblue"
