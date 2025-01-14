@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+// Check if the user provided a text prompt
+if ($argc < 2) {
+    echo "Usage: php text_to_image.php \"Your text here\"\n";
+    exit(1);
+}
+
+$text = $argv[1];
+
+// Generate a unique filename for the image
+$filename = uniqid() . '.png';
+$filepath = __DIR__ . '/images/' . $filename;
+
+// Create the images directory if it doesn't exist
+if (!file_exists(__DIR__ . '/images')) {
+    mkdir(__DIR__ . '/images', 0777, true);
+}
+
+// Use ImageMagick to generate the image
+$cmd = "convert -background white -fill black -font Arial -pointsize 24 label:'$text' '$filepath'";
+exec($cmd, $output, $return_var);
+
+if ($return_var === 0) {
+    echo "Image generated successfully at: $filepath\n";
+} else {
+    echo "Failed to generate image.\n";
+}
