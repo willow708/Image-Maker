@@ -5,3 +5,7 @@ The Image-Maker will then ask you for an image prompt arguement.
 Imput your prompt as such: php <file-name> "<YOUR_PROMPT>
 Do not forget to get an API Key at huggingface.co
 Install the dependencies: sudo apt install php-cli curl and sudo apt install php-curl
+Search xming download in your browser, it will be the sourceforge.net download.
+After download and install, open Ubuntu 24.04 LTS WSL and run: export DISPLAY =:0
+Check your connection with: xeyes, which you can install with: sudo apt install x11-apps
+Also, install feh and imagemagick to view generated_image.png
