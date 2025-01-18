@@ -16,3 +16,4 @@ put export DISPLAY=:0 in your ~/.bashrc or your ~/.zshrc, then: source ~/.bashrc
 
 
 And with klingai.com, you can make videos with the image to video feature!
+To view either of the videos, download the RAW then open your media viewer.
