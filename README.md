@@ -12,3 +12,7 @@ Also, install feh and imagemagick to view generated_image.png
 Image1.php is for 1920x1080 pictures in FULL HD.
 To keep from having to reset the viewer every time you start a new shell,
 put export DISPLAY=:0 in your ~/.bashrc or your ~/.zshrc, then: source ~/.bashrc
+
+
+
+And with klingai.com, you can make videos with the image to video feature!
